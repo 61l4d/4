@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Link SE</title>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div ng-app="app">
+    <div ng-controller="IndexController as ctrl">
+      <button id="seLoginButton" ng-click="ctrl.seLogin()" disabled>Loading, please wait...</button>
+      <div>{{ ctrl.message }}</div>
+    </div> <!-- ng-controller -->
+  </div> <!-- ng-app -->
+
+  <script src="js/angular.min.js"></script>
+  <script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>
+  <script type="text/javascript" charset="utf-8">
+    angular
+      .module('app',[])
+      .controller('IndexController',function($http){
+        var ctrl = this;
+
+        // initialize SE login
+        SE.init({
+          clientId: 7803,
+          key: 'pRT1xPnW4mwwbRB2Gi)ipA((',
+          channelUrl: 'https://fbse.herokuapp.com/proxy',
+          complete: function (data) {
+            document.getElementById('seLoginButton').removeAttribute('disabled');
+            document.getElementById('seLoginButton').innerHTML = "Please log in to Stack Exchange";
+          }
+        });
+
+        // authenticate SE
+        ctrl.seLogin = function(){
+          SE.authenticate({
+            success: function(data) {
+              console.log(data);
+            },
+            error: function(data) {
+              alert(errorName + '. ' + errorMessage);
+            },
+            scope: ['read_inbox'],
+            networkUsers: true
+          });
+        };
+      });
+  </script>
+</body>
+</html>

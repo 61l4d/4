@@ -5,8 +5,13 @@
   <%= csrf_meta_tags %>
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="mb-icon.png" type="image/png" />
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+
+  <!-- logo -->
+  <iframe id="logo-index" src="images/appjoin_logo.svg"></iframe>
+
   <div ng-app="app">
     <div ng-controller="IndexController as ctrl">
       <button id="seLoginButton" ng-click="ctrl.seLogin()" disabled>Loading, please wait...</button>

@@ -4,4 +4,6 @@ Rails.application.routes.draw do
 	root to: 'home#index'
 
   get 'proxy', to: "home#proxy"
+
+  get 'fb_proxy', to: "home#fb_proxy"
 end

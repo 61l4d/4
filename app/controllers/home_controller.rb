@@ -4,4 +4,7 @@ class HomeController < ApplicationController
 
   def proxy
   end
+
+  def fb_proxy
+  end
 end

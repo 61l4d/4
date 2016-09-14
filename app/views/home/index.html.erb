@@ -9,6 +9,24 @@
 </head>
 <body>
 
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '237788196618055',
+      xfbml      : true,
+      version    : 'v2.7'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
   <!-- logo -->
   <iframe id="logo-index" src="images/appjoin_logo.svg"></iframe>
 
@@ -19,12 +37,23 @@
     </div> <!-- ng-controller -->
   </div> <!-- ng-app -->
 
+	<div id="fb-root"></div>
+
+	<fb:login-button scope="public_profile,user_friends" show-faces="true" max-rows="1" size="large"></fb:login-button>
+
+	<div
+		class="fb-like"
+		data-share="true"
+		data-width="450"
+		data-show-faces="true">
+	</div>
+
   <script src="js/angular.min.js"></script>
   <script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>
   <script type="text/javascript" charset="utf-8">
     angular
       .module('app',[])
-      .controller('IndexController',function($http){
+      .controller('IndexController', function($http){
         var ctrl = this;
 
         // initialize SE login
@@ -51,7 +80,107 @@
             networkUsers: true
           });
         };
-      });
+      })
+
+      // https://blog.brunoscopelliti.com/facebook-authentication-in-your-angularjs-web-app/
+			.service('sAuth', ['$rootScope', function($rootScope){
+				var svc = this;
+
+				svc.watchAuthenticationStatusChange = function() {
+
+					FB.Event.subscribe('auth.authResponseChange', function(res) {
+						if (res.status === 'connected') {
+
+							/*
+							 The user is already logged,
+							 is possible retrieve his personal info
+							*/
+							svc.getUserInfo();
+
+							/*
+							 This is also the point where you should create a
+							 session for the current user.
+							 For this purpose you can use the data inside the
+							 res.authResponse object.
+							*/
+
+						}
+						else {
+
+							/*
+							 The user is not logged to the app, or into Facebook:
+							 destroy the session on the server.
+							*/
+
+						}
+
+					});
+
+				}
+
+				svc.getUserInfo = function() {
+
+					FB.api('/me', function(res) {
+						$rootScope.$apply(function() {
+							$rootScope.user = svc.user = res;
+console.log(svc.user)
+						});
+					});
+				}
+
+				svc.logout = function() {
+
+					FB.logout(function(response) {
+						$rootScope.$apply(function() {
+							$rootScope.user = svc.user = {};
+						});
+					});
+
+				}
+			}])
+
+      // https://blog.brunoscopelliti.com/facebook-authentication-in-your-angularjs-web-app/
+      .run(['$rootScope', '$window', 'sAuth',
+        function($rootScope, $window, sAuth) {
+          $rootScope.user = {};
+
+					$window.fbAsyncInit = function() {
+						// Executed when the SDK is loaded
+
+						FB.init({
+
+							 // The app id of the web app;
+							 // To register a new app visit Facebook App Dashboard
+							 // ( https://developers.facebook.com/apps/ )
+
+							appId: '237788196618055',
+
+							 // Adding a Channel File improves the performance
+							 // of the javascript SDK, by addressing issues
+							 // with cross-domain communication in certain browsers.
+
+							channelUrl: 'http://localhost:3000/fb_proxy',
+
+							 // Set if you want to check the authentication status
+							 // at the start up of the app
+
+							status: true,
+
+							 // Enable cookies to allow the server to access
+							 // the session
+
+							cookie: true,
+
+							// Parse XFBML
+
+							xfbml: true,
+
+							version: 'v2.4'
+						});
+
+						sAuth.watchAuthenticationStatusChange();
+					};
+      }]);
   </script>
 </body>
 </html>

@@ -32,21 +32,24 @@
 
   <div ng-app="app">
     <div ng-controller="IndexController as ctrl">
+
+	    <fb:login-button scope="public_profile,user_friends" show-faces="true" max-rows="1" size="large"></fb:login-button>
+
       <button id="seLoginButton" ng-click="ctrl.seLogin()" disabled>Loading, please wait...</button>
+
       <div>{{ ctrl.message }}</div>
+
+      <div id="fb-root"></div>
+
+      <div
+        class="fb-like"
+        data-share="true"
+        data-width="450"
+        data-show-faces="true">
+      </div>
+
     </div> <!-- ng-controller -->
   </div> <!-- ng-app -->
-
-	<div id="fb-root"></div>
-
-	<fb:login-button scope="public_profile,user_friends" show-faces="true" max-rows="1" size="large"></fb:login-button>
-
-	<div
-		class="fb-like"
-		data-share="true"
-		data-width="450"
-		data-show-faces="true">
-	</div>
 
   <script src="js/angular.min.js"></script>
   <script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>

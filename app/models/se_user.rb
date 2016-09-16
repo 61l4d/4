@@ -1,2 +1,0 @@
-class SeUser < ApplicationRecord
-end

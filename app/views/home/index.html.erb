@@ -93,6 +93,7 @@
 				var svc = this;
 
 				svc.watchAuthenticationStatusChange = function() {
+alert('svc.watchAuthenticationStatusChange')
                             // original: auth.authResponseChange
 					FB.Event.subscribe('auth.statusChange', function(res) {
       console.log(res)

@@ -93,8 +93,8 @@
 				var svc = this;
 
 				svc.watchAuthenticationStatusChange = function() {
-
-					FB.Event.subscribe('auth.authResponseChange', function(res) {
+                            // original: auth.authResponseChange
+					FB.Event.subscribe('auth.statusChange', function(res) {
       console.log(res)
 						if (res.status === 'connected') {
 alert('res.status===connected')

@@ -119,11 +119,12 @@
 				}
 
 				svc.getFBUserInfo = function() {
-
+alert('svc.getFBUserInfo')
 					FB.api('/me', function(res) {
 						$rootScope.$apply(function() {
+alert('FB.api(/me')
 							$rootScope.userFB = svc.userFB = res;
-console.log(svc.userFB)
+console.log(svc.userFB,$rootScope.userFB);
 						});
 					});
 				}

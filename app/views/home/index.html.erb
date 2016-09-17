@@ -95,8 +95,9 @@
 				svc.watchAuthenticationStatusChange = function() {
 
 					FB.Event.subscribe('auth.authResponseChange', function(res) {
+      console.log(res)
 						if (res.status === 'connected') {
-
+alert('res.status===connected')
 						  // The user is already logged,
 							// is possible retrieve his personal info
 							svc.getFBUserInfo();

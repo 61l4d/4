@@ -95,13 +95,15 @@
 				var svc = this;
 
 				svc.watchAuthenticationStatusChange = function() {
-
-					FB.Event.subscribe('auth.authResponseChange', function(res) {
+alert('svc.watchAuthenticationStatusChange')
+                            // original: auth.authResponseChange
+					FB.Event.subscribe('auth.statusChange', function(res) {
+      console.log(res)
 						if (res.status === 'connected') {
-
+alert('res.status===connected')
 						  // The user is already logged,
 							// is possible retrieve his personal info
-							svc.getUserInfo();
+							svc.getFBUserInfo();
 
 							// This is also the point where you should create a
 							// session for the current user.
@@ -120,12 +122,13 @@
 
 				}
 
-				svc.getUserInfo = function() {
-
+				svc.getFBUserInfo = function() {
+alert('svc.getFBUserInfo')
 					FB.api('/me', function(res) {
 						$rootScope.$apply(function() {
-							$rootScope.user = svc.user = res;
-console.log(svc.user)
+alert('FB.api(/me')
+							$rootScope.userFB = svc.userFB = res;
+console.log(svc.userFB,$rootScope.userFB);
 						});
 					});
 				}
@@ -134,7 +137,7 @@ console.log(svc.user)
 
 					FB.logout(function(response) {
 						$rootScope.$apply(function() {
-							$rootScope.user = svc.user = {};
+							$rootScope.userFB = svc.userFB = {};
 						});
 					});
 
@@ -144,7 +147,7 @@ console.log(svc.user)
       // https://blog.brunoscopelliti.com/facebook-authentication-in-your-angularjs-web-app/
       .run(['$rootScope', '$window', 'sAuth',
         function($rootScope, $window, sAuth) {
-          $rootScope.user = {};
+          $rootScope.userFB = {};
 
 					$window.fbAsyncInit = function() {
 						// Executed when the SDK is loaded
@@ -179,7 +182,7 @@ console.log(svc.user)
 
 							version: 'v2.7'
 						});
-
+alert('calling sAuth.watchAuthenticationStatusChange()')
 						sAuth.watchAuthenticationStatusChange();
 					};
       }]);
